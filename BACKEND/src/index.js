@@ -11,10 +11,14 @@ import { connectDB } from "./lib/db.js";
 // This string contains your secret front-end address, so it stays hidden here for security.
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
+import clerkWebhook from "./webhooks/clerk.js";
+
 const app = express();
 
 //console.log("DB_URL =", process.env.DB_URL)
 const PORT = process.env.PORT;
+
+app.use("/api/webhooks/clerk",express.raw({ type: "application/json" }), clerkWebhook);
 
 app.use(express.json());
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
