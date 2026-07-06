@@ -5,6 +5,7 @@ import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 import User from "./models/user.model.js";
 import { connectDB } from "./lib/db.js";
+import { app, server } from "./lib/socket.js";
 
 
 import clerkWebhook from "./webhooks/clerk.webhook.js";
@@ -13,7 +14,6 @@ import authRoutes from "./routes/auth.route.js";
 const FRONTEND_URL = process.env.FRONTEND_URL;
 const PORT = process.env.PORT || 3000; // Added a fallback port just in case
 
-const app = express();
 
 app.use("/api/webhooks/clerk", express.raw({ type: "application/json" }), clerkWebhook);
 
@@ -27,7 +27,7 @@ app.get("/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectDB();
   console.log("Server is up and running on PORT:", PORT);
 });
