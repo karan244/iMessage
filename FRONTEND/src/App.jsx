@@ -1,13 +1,12 @@
 import { WallpaperProvider } from "./context/WallpaperContext";
 import { ThemeProvider } from "./context/ThemeContext";
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router-dom"; // Updated target path wrapper engine
 import ChatPage from "./pages/ChatPage";
 import AuthPage from "./pages/AuthPage";
 import { useAuth } from "@clerk/react";
 import PageLoader from "./components/PageLoader";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
-
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -17,7 +16,7 @@ function App() {
   const { isSignedIn, isLoaded } = useAuth();
 
   // 2. ZUSTAND SELECTORS PATTERN (Performance optimization)
-  // Instead of destructuring the whole store (Option 1), we select specific slices (Option 2).
+  // Instead of destructuring the whole store, we select specific slices.
   // This makes sure this App component ONLY re-renders if these precise variables change, 
   // keeping the app fast and lightweight.
   const clearAuth = useAuthStore((state) => state.clearAuth);
@@ -61,6 +60,9 @@ function App() {
             path="/auth"
             element={!isSignedIn ? <AuthPage /> : <Navigate to={"/"} replace />}
           />
+
+          {/* Fallback wild-card path router safety interceptor */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         
         {/* GLOBAL POPUP TOAST NOTIFICATIONS HUB */}
