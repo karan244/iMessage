@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom' // <-- 1. IMPORT THE ROUTER
 import './index.css'
 import App from './App.jsx'
 
@@ -13,8 +14,11 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ClerkProvider>
-      <App />  {/* we have wrapped our entire app with ClerkProvider so that we can use Clerk's authentication features throughout the app. */}
+    {/* 2. ADD WRAPPER MATRIX TUNNEL CHANNELS */}
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <BrowserRouter> 
+        <App />
+      </BrowserRouter>
     </ClerkProvider>
   </StrictMode>,
 )
